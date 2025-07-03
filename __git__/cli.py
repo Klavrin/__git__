@@ -1,4 +1,6 @@
 import argparse
+import os
+import data
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -11,7 +13,8 @@ def parse_args():
     return parser.parse_args()
 
 def init(args):
-    print("This is the init function!")
+    data.init()
+    print(f'Initialized empty __git__ repository in {os.getcwd()}')
 
 if __name__ == "__main__":
     args = parse_args()
