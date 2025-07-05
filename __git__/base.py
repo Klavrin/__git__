@@ -30,3 +30,36 @@ def is_ignored(path):
     if os.path.basename(path) in ignored_dirs:
         return True
     return False
+
+def iter_tree_entries(oid):
+    # tree = data.get_object(oid, expected="tree").decode()
+    # tokenized_content = []
+
+    # tree = tree[:-1].split('\n')
+    # tokenized_tree = [line.split() for line in tree]
+    # return tokenized_tree
+    if not oid:
+        return
+    tree = data.get_object(oid, 'tree')
+    for entry in tree.decode().splitlines():
+        type_, oid, name = entry.split(' ', 2)
+        yield type_, oid, name
+
+def get_tree(oid, base_path=""):
+    result = {}
+    for name, oid, type_ in iter_tree_entries(oid):
+        path = base_path + name
+        if type_ == "blob":
+            result[path] = oid
+        elif type_ == "tree":
+            result.update(get_tree(oid, f"{path}/"))
+        else:
+            assert False, f"Unknown tree entry {type_}"
+    return result
+
+def read_tree(oid):
+    for path, oid in get_tree(oid, base_path="./").items():
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "wb") as file:
+            file.write(data.get_object(oid))
+
