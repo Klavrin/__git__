@@ -29,7 +29,7 @@ def parse_args():
 
     commit_parser = commands.add_parser("commit")
     commit_parser.set_defaults(func=commit)
-    commit_parser.add_argument("-m", "-message", required=True)
+    commit_parser.add_argument("-m", "--message", required=True)
 
     return parser.parse_args()
 
