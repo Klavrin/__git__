@@ -45,7 +45,7 @@ def write_tree(args):
     print(base.write_tree())
 
 def read_tree(args):
-    base.get_tree(args.tree)
+    base.read_tree(args.tree)
 
 if __name__ == "__main__":
     args = parse_args()

@@ -26,10 +26,7 @@ def write_tree(directory='.'):
     return data.hash_object(tree.encode(), "tree")
 
 def is_ignored(path):
-    ignored_dirs = ['.__git__']
-    if os.path.basename(path) in ignored_dirs:
-        return True
-    return False
+     return '.__git__' in path.split('/')
 
 def iter_tree_entries(oid):
     # tree = data.get_object(oid, expected="tree").decode()
