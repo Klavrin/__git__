@@ -29,3 +29,9 @@ def set_HEAD(oid):
     with open(f"{GIT_DIR}/HEAD", "w") as file:
         file.write(oid)
 
+def get_HEAD():
+    try:
+        with open(f"{GIT_DIR}/HEAD") as file:
+            return file.read().strip()
+    except FileNotFoundError:
+        pass
