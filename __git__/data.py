@@ -24,3 +24,8 @@ def get_object(oid, expected: str | None = "blob"):
         if expected is not None:
             assert type_ == expected, f"Expected {expected}, got {type_}"
         return content
+
+def set_HEAD(oid):
+    with open(f"{GIT_DIR}/HEAD", "w") as file:
+        file.write(oid)
+
