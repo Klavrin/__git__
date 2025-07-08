@@ -25,13 +25,24 @@ def get_object(oid, expected: str | None = "blob"):
             assert type_ == expected, f"Expected {expected}, got {type_}"
         return content
 
-def set_HEAD(oid):
-    with open(f"{GIT_DIR}/HEAD", "w") as file:
+# def set_HEAD(oid):
+#     with open(f"{GIT_DIR}/HEAD", "w") as file:
+#         file.write(oid)
+#
+# def get_HEAD():
+#     try:
+#         with open(f"{GIT_DIR}/HEAD") as file:
+#             return file.read().strip()
+#     except FileNotFoundError:
+#         pass
+
+def update_ref(ref, oid):
+    with open(f"{GIT_DIR}/{ref}", "w") as file:
         file.write(oid)
 
-def get_HEAD():
+def get_ref(ref):
     try:
-        with open(f"{GIT_DIR}/HEAD") as file:
+        with open(f"{GIT_DIR}/{ref}") as file:
             return file.read().strip()
     except FileNotFoundError:
         pass
