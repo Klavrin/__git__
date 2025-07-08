@@ -3,6 +3,7 @@ import data
 import itertools
 import operator
 from collections import namedtuple
+import string
 
 def write_tree(directory='.'):
     entries = []
@@ -122,5 +123,23 @@ def create_tag(name, oid):
     data.update_ref(f"refs/tags/{name}", oid)
 
 def get_oid(name):
-    return data.get_ref(name) or name
+    # name is ref
+    refs_to_try = [
+        f"{name}",
+        f"refs/{name}",
+        f"refs/tags/{name}",
+        f"refs/heads/{name}"
+    ]
+    for ref in refs_to_try:
+        get_ref = data.get_ref(ref) 
+        print("get_ref", get_ref)
+        if get_ref:
+            return get_ref
+
+    # name is SHA-1
+    is_hex = all(char in string.hexdigits for char in name)
+    if len(name) == 40 and is_hex:
+        return name
+
+    assert False, f'Unknown name {name}'
 
