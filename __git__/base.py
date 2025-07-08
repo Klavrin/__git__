@@ -121,3 +121,6 @@ def checkout(oid):
 def create_tag(name, oid):
     data.update_ref(f"refs/tags/{name}", oid)
 
+def get_oid(name):
+    return data.get_ref(name) or name
+
