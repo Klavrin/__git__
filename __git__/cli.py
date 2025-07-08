@@ -84,6 +84,10 @@ def log(args):
 def checkout(args):
     base.checkout(args.oid)
 
+def tag(args):
+    oid = args.oid or data.get_HEAD()
+    base.create_tag(args.name, oid)
+
 if __name__ == "__main__":
     args = parse_args()
     args.func(args)
