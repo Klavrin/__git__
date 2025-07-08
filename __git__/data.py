@@ -37,12 +37,18 @@ def get_object(oid, expected: str | None = "blob"):
 #         pass
 
 def update_ref(ref, oid):
-    with open(f"{GIT_DIR}/{ref}", "w") as file:
+    ref_path = f"{GIT_DIR}/{ref}"
+
+    # extract the directory part of `ref_path` and create a full directory path inside `.__git__`
+    os.makedirs(os.path.dirname(ref_path), exist_ok=True) 
+
+    with open(ref_path, "w") as file:
         file.write(oid)
 
 def get_ref(ref):
     try:
-        with open(f"{GIT_DIR}/{ref}") as file:
+        rel_path = f"{GIT_DIR}/{ref}"
+        with open(rel_path) as file:
             return file.read().strip()
     except FileNotFoundError:
         pass

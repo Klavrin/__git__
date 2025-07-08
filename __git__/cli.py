@@ -43,7 +43,7 @@ def parse_args():
     tag_parser = commands.add_parser("tag")
     tag_parser.set_defaults(func=tag)
     tag_parser.add_argument("name")
-    tag_parser.add_argument("oid")
+    tag_parser.add_argument("oid", nargs="?")
 
     return parser.parse_args()
 
