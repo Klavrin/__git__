@@ -48,8 +48,14 @@ def update_ref(ref, oid):
 def get_ref(ref):
     try:
         rel_path = f"{GIT_DIR}/{ref}"
+        value = None
         with open(rel_path) as file:
-            return file.read().strip()
+            value = file.read().strip()
+
+        if value and value.startswith("ref:"):
+            return get_ref(value.split(":", 1)[1].strip())
+
+        return value
     except FileNotFoundError:
         pass
 
