@@ -50,6 +50,11 @@ def parse_args():
     k_parser = commands.add_parser("k")
     k_parser.set_defaults(func=k)
 
+    branch_parser = commands.add_parser("branch")
+    branch_parser.set_defaults(func=create_branch)
+    branch_parser.add_argument("name")
+    branch_parser.add_argument("starting_point", default="@", type=oid, nargs="?")
+
     return parser.parse_args()
 
 def init(args):
@@ -96,6 +101,10 @@ def k(args):
         commit = base.get_commit(oid)
         if commit.parent:
             print("Parent", commit.parent)
+
+def create_branch(args):
+    base.create_branch(args.name, args.starting_point)
+    print(f"Branch {args.name} created at {args.starting_point[:10]}")
 
 if __name__ == "__main__":
     args = parse_args()
