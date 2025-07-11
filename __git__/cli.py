@@ -94,8 +94,8 @@ def tag(args):
 def k(args):
     oids = set()
     for refname, ref in data.iter_refs():
-        print(refname, ref)
-        oids.add(ref)
+        print(refname, ref.value)
+        oids.add(ref.value)
 
     for oid in base.iter_commits_and_parents(oids):
         commit = base.get_commit(oid)

@@ -1,5 +1,6 @@
 import hashlib
 import os
+from collections import namedtuple
 
 GIT_DIR = ".__git__"
 
@@ -36,14 +37,16 @@ def get_object(oid, expected: str | None = "blob"):
 #     except FileNotFoundError:
 #         pass
 
-def update_ref(ref, oid):
+RefValue = namedtuple("RefValue", ["symbolic", "value"])
+def update_ref(ref, value):
+    assert not value.symbolic
     ref_path = f"{GIT_DIR}/{ref}"
 
     # extract the directory part of `ref_path` and create a full directory path inside `.__git__`
     os.makedirs(os.path.dirname(ref_path), exist_ok=True) 
 
     with open(ref_path, "w") as file:
-        file.write(oid)
+        file.write(value.value)
 
 def get_ref(ref):
     try:
@@ -55,9 +58,10 @@ def get_ref(ref):
         if value and value.startswith("ref:"):
             return get_ref(value.split(":", 1)[1].strip())
 
-        return value
+        return RefValue(symbolic=False, value=value)
     except FileNotFoundError:
-        pass
+        # pass
+        assert False, "File not found."
 
 def iter_refs():
     refs = ["HEAD"]
